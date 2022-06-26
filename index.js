@@ -1,8 +1,9 @@
 const inputBtn = document.getElementById("input-btn");
+const deleteBtn = document.getElementById("delete-btn");
 const inputEl = document.getElementById("input-el");
 const ulEl = document.getElementById("ul-el");
 let myLeads = [];
-let leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"));
+const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"));
 
 // helper functions
 const removeChildren = (parent) => {
@@ -36,4 +37,10 @@ inputBtn.addEventListener("click", () => {
     localStorage.setItem("myLeads", JSON.stringify(myLeads))
     removeChildren(ulEl);
     createPlusAppendLi();
+})
+
+deleteBtn.addEventListener("dblclick", () => {
+    localStorage.clear();
+    myLeads = [];
+    removeChildren(ulEl);
 })

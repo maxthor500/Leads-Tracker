@@ -30,6 +30,18 @@ button {
     cursor: pointer;
 }
 
+#delete-btn {
+    position: absolute;
+    right: .625rem;
+    background-color: #fff;
+    color: #5f9341;
+}
+
+#delete-btn:hover {
+    border: 1px solid #f00;
+    color: #f00;
+}
+
 ul {
     margin-top: 1.2rem;
     list-style: none;
