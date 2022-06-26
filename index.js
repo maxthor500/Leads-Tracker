@@ -1,18 +1,8 @@
 const inputBtn = document.getElementById("input-btn");
-
-let myLeads = [];
 const inputEl = document.getElementById("input-el");
 const ulEl = document.getElementById("ul-el");
-
-inputBtn.addEventListener("click", () => {
-    if (inputEl.value) {
-        myLeads.push(inputEl.value);
-        inputEl.value = "";
-    }
-
-    removeChildren(ulEl);
-    createPlusAppendLi(); 
-})
+let myLeads = [];
+let leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"));
 
 // helper functions
 const removeChildren = (parent) => {
@@ -32,3 +22,18 @@ const createPlusAppendLi = () => {
         li.appendChild(anchor);
     }
 }
+
+if (leadsFromLocalStorage) {
+    myLeads = leadsFromLocalStorage;
+    createPlusAppendLi();
+}
+
+inputBtn.addEventListener("click", () => {
+    if (inputEl.value) {
+        myLeads.push(inputEl.value);
+        inputEl.value = "";
+    }
+    localStorage.setItem("myLeads", JSON.stringify(myLeads))
+    removeChildren(ulEl);
+    createPlusAppendLi();
+})
