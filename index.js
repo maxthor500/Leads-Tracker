@@ -7,6 +7,7 @@ const ulEl = document.getElementById("ul-el");
 inputBtn.addEventListener("click", () => {
     if (inputEl.value) {
         myLeads.push(inputEl.value);
+        inputEl.value = "";
     }
 
     removeChildren(ulEl);
@@ -23,7 +24,11 @@ const removeChildren = (parent) => {
 const createPlusAppendLi = () => {
     for (let i = 0; i < myLeads.length; i++) {
         const li = document.createElement("li");
-        li.textContent += myLeads[i];
+        const anchor = document.createElement("a");
+        anchor.target = "_blank";
+        anchor.href = myLeads[i];
+        anchor.textContent = myLeads[i];
         ulEl.appendChild(li);
+        li.appendChild(anchor);
     }
 }
