@@ -4,6 +4,11 @@ const inputEl = document.getElementById("input-el");
 const ulEl = document.getElementById("ul-el");
 let myLeads = [];
 const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"));
+const tabBtn = document.getElementById("tab-btn");
+
+if (leadsFromLocalStorage) {
+    myLeads = leadsFromLocalStorage;
+}
 
 // helper functions
 const removeChildren = (parent) => {
@@ -13,6 +18,8 @@ const removeChildren = (parent) => {
 };
 
 const createPlusAppendLi = () => {
+    localStorage.setItem("myLeads", JSON.stringify(myLeads))
+    removeChildren(ulEl);
     for (let i = 0; i < myLeads.length; i++) {
         const li = document.createElement("li");
         const anchor = document.createElement("a");
@@ -24,18 +31,20 @@ const createPlusAppendLi = () => {
     }
 }
 
-if (leadsFromLocalStorage) {
-    myLeads = leadsFromLocalStorage;
-    createPlusAppendLi();
-}
+tabBtn.addEventListener("click", () => {
+    chrome.tabs.query(
+        {active: true, currentWindow: true}, 
+        (tabs) => {
+            myLeads.push(tabs[0].url);
+            createPlusAppendLi();
+    })
+})
 
 inputBtn.addEventListener("click", () => {
     if (inputEl.value) {
         myLeads.push(inputEl.value);
         inputEl.value = "";
     }
-    localStorage.setItem("myLeads", JSON.stringify(myLeads))
-    removeChildren(ulEl);
     createPlusAppendLi();
 })
 
@@ -44,3 +53,15 @@ deleteBtn.addEventListener("dblclick", () => {
     myLeads = [];
     removeChildren(ulEl);
 })
+
+deleteBtn.addEventListener("click", () => {
+    const listContainer = document.getElementById("list-container");
+    const alert = document.createElement("p");
+    alert.textContent = "Please, double click to delete all!";
+    listContainer.appendChild(alert);
+
+    const alertTimeout = setTimeout(() => {
+        listContainer.removeChild(alert);
+    }, 1000)
+}, {once : true})
+
